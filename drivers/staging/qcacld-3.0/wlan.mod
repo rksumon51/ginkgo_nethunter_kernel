@@ -20,8 +20,6 @@
 ./core/hdd/src/wlan_hdd_tx_rx.o
 ./core/hdd/src/wlan_hdd_wmm.o
 ./core/hdd/src/wlan_hdd_wowl.o
-./core/hdd/src/wlan_oplus_wfd.o
-./core/hdd/src/oplus_wlan_hdd_dual_sta.o
 ./core/hdd/src/wlan_hdd_wext.o
 ./core/hdd/src/wlan_hdd_hostapd_wext.o
 ./core/hdd/src/wlan_hdd_debugfs.o
