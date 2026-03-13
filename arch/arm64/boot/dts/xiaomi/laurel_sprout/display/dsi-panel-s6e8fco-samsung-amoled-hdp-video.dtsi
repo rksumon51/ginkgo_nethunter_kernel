@@ -1,0 +1,235 @@
+/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2021 XiaoMi, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	dsi_panel_pwr_supply_samsung: dsi_panel_pwr_supply_samsung {
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <62000>;
+			qcom,supply-disable-load = <80>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "panel_ldo";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <100000>;
+			qcom,supply-disable-load = <100>;
+			qcom,supply-post-on-sleep = <1000>;
+		};
+
+		qcom,panel-supply-entry@2 {
+			reg = <2>;
+			qcom,supply-name = "panel_iovcc";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <100000>;
+			qcom,supply-disable-load = <100>;
+		};
+	};
+};
+
+&mdss_mdp {
+	dsi_s6e8fco_samsung_hdp_video: qcom,mdss_dsi_s6e8fco_samsung_hdp_video {
+		qcom,mdss-dsi-panel-name =
+			"s6e8fco samsung amoled video mode dsi panel";
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
+		qcom,mdss-dsi-underflow-color = <0xff>;
+		qcom,mdss-dsi-border-color = <0>;
+		qcom,mdss-dsi-h-sync-pulse = <0>;
+		qcom,mdss-dsi-traffic-mode = "burst_mode";
+		qcom,mdss-dsi-lane-map = "lane_map_0123";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-tx-eot-append;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		qcom,mdss-dsi-lane-3-state;
+		qcom,mdss-dsi-panel-physical-type = "oled";
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-bl-inverted-dbv;
+		qcom,mdss-dsi-lp11-init;
+		qcom,bl-update-flag = "delay_until_first_frame";
+		qcom,mdss-dsi-samsung-flag;
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
+		qcom,mdss-dsi-reset-sequence = <1 12>, <0 2>, <1 10>;
+		qcom,mdss-pan-physical-width-dimension = <65>;
+		qcom,mdss-pan-physical-height-dimension = <140>;
+		qcom,disp-doze-lbm-backlight = <15>;
+		qcom,disp-doze-hbm-backlight = <190>;
+		qcom,mdss-dsi-panel-dc-threshold = <320>;
+
+		qcom,disp-fod-dim-lut = <
+			/* brightness, alpha */
+			0	0XFF
+			3	0XEB
+			13	0XDD
+			31	0XD0
+			33	0XCA
+			48	0XC1
+			97	0XAC
+			146	0X9D
+			194	0X90
+			243	0X85
+			292	0X7B
+			341	0X72
+			389	0X6A
+			438	0X69
+			487	0X62
+			535	0X5B
+			584	0X55
+			633	0X4F
+			682	0X4A
+			730	0X44
+			779	0X3F
+			828	0X3A
+			876	0X35
+			925	0X31
+			974	0X2C
+			1023	0X28
+		>;
+		qcom,disp-dc-dim-lut = <
+			/* brightness, alpha */
+			0	0XFF
+			1	0XE8
+			3	0XDB
+			5	0XD3
+			9	0XC6
+			15	0XB9
+			22	0XAC
+			32	0X9E
+			43	0X92
+			56	0X85
+			69	0X79
+			86	0X6C
+			104	0X60
+			124	0X54
+			145	0X48
+			169	0X3C
+			196	0X2F
+			224	0X23
+			253	0X18
+			285	0XC
+			320	0X0
+		>;
+
+		qcom,mdss-dsi-display-timings {
+			timing@0 {
+				qcom,mdss-dsi-panel-width = <720>;
+				qcom,mdss-dsi-panel-height = <1560>;
+				qcom,mdss-dsi-h-front-porch = <350>;
+				qcom,mdss-dsi-h-back-porch = <294>;
+				qcom,mdss-dsi-h-pulse-width = <40>;
+				qcom,mdss-dsi-h-sync-skew = <0>;
+				qcom,mdss-dsi-v-back-porch = <5>;
+				qcom,mdss-dsi-v-front-porch = <17>;
+				qcom,mdss-dsi-v-pulse-width = <2>;
+				qcom,mdss-dsi-panel-framerate = <60>;
+				qcom,mdss-dsi-on-command = [
+					39 01 00 00 00 00 03 FC 5A 5A
+					39 01 00 00 00 00 03 51 00 00
+					15 01 00 00 00 00 02 53 20
+					05 01 00 00 32 00 02 11 00
+					05 01 00 00 00 00 02 29 00
+					39 01 00 00 00 00 03 B0 04 ED
+					39 01 00 00 00 00 0A ED E4 08 96 A4 2A 72 E2 CA 00
+					39 01 00 00 00 00 03 FC A5 A5
+					39 01 00 00 00 00 03 F0 5A 5A
+					39 01 00 00 00 00 03 FC 5A 5A
+					39 01 00 00 00 00 02 E1 93
+					39 01 00 00 00 00 03 B0 05 F4
+					39 01 00 00 00 00 02 F4 03
+					39 01 00 00 00 00 04 ED 01 81 04
+					39 01 00 00 00 00 03 F0 A5 A5
+					39 01 00 00 00 00 03 FC A5 A5];
+				qcom,mdss-dsi-off-command = [
+					05 01 00 00 14 00 02 28 00
+					05 01 00 00 78 00 02 10 00
+				];
+				qcom,mdss-dsi-acl-on-command = [
+					15 01 00 00 00 00 02 55 01
+				];
+				qcom,mdss-dsi-acl-off-command = [
+					15 01 00 00 00 00 02 55 00
+				];
+				qcom,mdss-dsi-post-panel-on-command = [
+					15 01 00 00 00 00 02 55 01
+				];
+				qcom,mdss-dsi-doze-lbm-command = [
+					15 01 00 00 00 00 02 53 20
+					39 01 00 00 00 00 03 51 00 0F
+				];
+				qcom,mdss-dsi-doze-hbm-command = [
+					15 01 00 00 00 00 02 53 20
+					39 01 00 00 00 00 03 51 00 BE
+				];
+				qcom,mdss-dsi-nolp-command = [
+					15 01 00 00 00 00 02 53 28
+				];
+				qcom,mdss-dsi-dimming-brightness-command = [
+					15 01 00 00 00 00 02 53 20
+					39 01 00 00 00 00 03 51 00 BE
+				];
+				qcom,mdss-dsi-brightness-command = [
+					39 01 00 00 00 00 03 51 00 BE
+				];
+				qcom,mdss-dsi-dimming-enable-command = [
+					15 01 00 00 00 00 02 53 28
+				];
+				qcom,mdss-dsi-dispparam-hbm-fod-on-command = [
+					15 01 00 00 10 00 02 53 E0
+				];
+				qcom,mdss-dsi-dispparam-hbm-fod-off-command = [
+					15 01 00 00 12 00 02 53 20
+				];
+				qcom,mdss-dsi-dispparam-hbm-fod-off-doze-lbm-on-command = [
+					15 01 00 00 10 00 02 53 23
+				];
+				qcom,mdss-dsi-dispparam-hbm-fod-off-doze-hbm-on-command = [
+					15 01 00 00 10 00 02 53 22
+				];
+
+				qcom,mdss-dsi-post-on-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-doze-lbm-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-doze-hbm-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-nolp-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-dimming-brightness-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-brightness-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-dimming-enable-command-state= "dsi_hs_mode";
+				qcom,mdss-dsi-acl-on-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-acl-off-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-on-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-dispparam-hbm-fod-on-command-state = "dsi_lp_mode";
+				qcom,mdss-dsi-dispparam-hbm-fod-off-command-state = "dsi_lp_mode";
+				qcom,mdss-dsi-dispparam-hbm-fod-off-doze-lbm-on-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-dispparam-hbm-fod-off-doze-hbm-on-command-state = "dsi_hs_mode";
+			};
+		};
+	};
+};

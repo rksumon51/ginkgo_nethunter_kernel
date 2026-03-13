@@ -1,0 +1,10 @@
+&qupv3_se8_spi {
+	status = "ok";
+	irled@1 {
+		compatible = "ir-spi-led";
+		reg = <1>; /* Chip select 0 */
+
+		duty-cycle = <30>;
+		spi-max-frequency = <1000000>;
+	};
+};
