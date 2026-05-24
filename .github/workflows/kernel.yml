@@ -39,7 +39,7 @@ jobs:
           export ARCH=arm64
           export SUBARCH=arm64
 
-          make O=out ginkgoa16_defconfig
+          make O=out nethunter_defconfig
 
           PATH=$PWD/clang/bin:$PATH make -j$(nproc --all) \
             O=out \
