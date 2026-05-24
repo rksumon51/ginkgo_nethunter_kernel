@@ -28,27 +28,33 @@ jobs:
             ccache \
             libssl-dev \
             make \
-            git
+            git \
+            libc6-dev
 
-      - name: Clone Proton Clang
+      - name: Clone Clang
         run: |
-          git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
+          git clone --depth=1 https://github.com/ZyCromerZ/Clang.git clang
 
       - name: Build Kernel
         run: |
           export ARCH=arm64
           export SUBARCH=arm64
+          export KBUILD_BUILD_USER=github
+          export KBUILD_BUILD_HOST=actions
 
           make O=out nethunter_defconfig
 
-          PATH=$PWD/clang/bin:$PATH make -j$(nproc --all) \
+          PATH=$PWD/clang/bin:$PATH \
+          make -j$(nproc --all) \
             O=out \
             CC=clang \
+            LD=ld.lld \
+            AR=llvm-ar \
+            NM=llvm-nm \
+            OBJCOPY=llvm-objcopy \
+            OBJDUMP=llvm-objdump \
+            STRIP=llvm-strip \
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
-      - name: Upload Kernel
-        uses: actions/upload-artifact@v4
-        with:
-          name: ginkgoa16-kernel
-          path: out/arch/arm64/boot/Image.gz-dtb
+      - name: Upload
