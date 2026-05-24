@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Source
@@ -40,18 +40,15 @@ jobs:
             gcc-aarch64-linux-gnu \
             gcc-arm-linux-gnueabi
 
-      - name: Clone Proton Clang
+      - name: Clean Source
         run: |
-          git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
-
-      - name: Fix Linker
-        run: |
-          sudo ln -sf /usr/bin/ld.lld /usr/bin/ld
+          make mrproper
 
       - name: Build Kernel
         run: |
           export ARCH=arm64
           export SUBARCH=arm64
+
           export KBUILD_BUILD_USER=github
           export KBUILD_BUILD_HOST=actions
 
@@ -59,13 +56,13 @@ jobs:
 
           make O=out nethunter_defconfig
 
-          PATH=$PWD/clang/bin:$PATH \
           make -j$(nproc --all) \
             O=out \
             CC=clang \
-            LD=ld.lld \
             LLVM=1 \
             LLVM_IAS=1 \
+            HOSTCC=gcc \
+            HOSTCXX=g++ \
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
