@@ -14,6 +14,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
+
           sudo apt install -y \
             bc \
             bison \
@@ -22,16 +23,23 @@ jobs:
             curl \
             zip \
             unzip \
-            gcc-aarch64-linux-gnu \
-            gcc-arm-linux-gnueabi \
+            git \
+            make \
             python3 \
             ccache \
             libssl-dev \
             libc6-dev \
-            make \
-            git
+            libelf-dev \
+            gcc \
+            g++ \
+            clang \
+            lld \
+            llvm \
+            binutils \
+            gcc-aarch64-linux-gnu \
+            gcc-arm-linux-gnueabi
 
-      - name: Clone Clang
+      - name: Clone Proton Clang
         run: |
           git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
 
@@ -42,12 +50,23 @@ jobs:
           export KBUILD_BUILD_USER=github
           export KBUILD_BUILD_HOST=actions
 
+          mkdir -p out
+
           make O=out nethunter_defconfig
 
           PATH=$PWD/clang/bin:$PATH \
           make -j$(nproc --all) \
             O=out \
             CC=clang \
+            HOSTCC=gcc \
+            HOSTCXX=g++ \
+            HOSTLD=ld.lld \
+            LD=ld.lld \
+            AR=llvm-ar \
+            NM=llvm-nm \
+            OBJCOPY=llvm-objcopy \
+            OBJDUMP=llvm-objdump \
+            STRIP=llvm-strip \
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
@@ -55,4 +74,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ginkgoa16-kernel
-          path: out/arch/arm64/boot/Image.gz-dtb
+          path: |
+            out/arch/arm64/boot/Image.gz-dtb
+            out/arch/arm64/boot/Image
