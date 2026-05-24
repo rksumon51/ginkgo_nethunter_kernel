@@ -48,7 +48,7 @@ jobs:
           make -j$(nproc --all) \
             O=out \
             CC=clang \
-            LD=ld.lld \
+            LD=$PWD/clang/bin/ld.lld \
             AR=llvm-ar \
             NM=llvm-nm \
             OBJCOPY=llvm-objcopy \
