@@ -27,9 +27,9 @@ jobs:
             python3 \
             ccache \
             libssl-dev \
+            libc6-dev \
             make \
-            git \
-            libc6-dev
+            git
 
       - name: Clone Clang
         run: |
@@ -57,4 +57,8 @@ jobs:
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
-      - name: Upload
+      - name: Upload Kernel
+        uses: actions/upload-artifact@v4
+        with:
+          name: ginkgoa16-kernel
+          path: out/arch/arm64/boot/Image.gz-dtb
