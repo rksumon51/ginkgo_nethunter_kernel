@@ -40,14 +40,13 @@ jobs:
             gcc-aarch64-linux-gnu \
             gcc-arm-linux-gnueabi
 
-      - name: Setup Clang
+      - name: Clone Proton Clang
         run: |
-          mkdir clang
-          cd clang
+          git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
 
-          wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r487747.tar.gz
-
-          tar -xzf clang-r487747.tar.gz
+      - name: Fix Linker
+        run: |
+          sudo ln -sf /usr/bin/ld.lld /usr/bin/ld
 
       - name: Build Kernel
         run: |
@@ -64,6 +63,7 @@ jobs:
           make -j$(nproc --all) \
             O=out \
             CC=clang \
+            LD=ld.lld \
             LLVM=1 \
             LLVM_IAS=1 \
             CROSS_COMPILE=aarch64-linux-gnu- \
