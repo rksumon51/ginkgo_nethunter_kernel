@@ -33,7 +33,7 @@ jobs:
 
       - name: Clone Clang
         run: |
-          git clone --depth=1 https://github.com/ZyCromerZ/Clang.git clang
+          git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
 
       - name: Build Kernel
         run: |
@@ -48,12 +48,6 @@ jobs:
           make -j$(nproc --all) \
             O=out \
             CC=clang \
-            LD=$PWD/clang/bin/ld.lld \
-            AR=llvm-ar \
-            NM=llvm-nm \
-            OBJCOPY=llvm-objcopy \
-            OBJDUMP=llvm-objdump \
-            STRIP=llvm-strip \
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
