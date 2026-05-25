@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Source
@@ -14,26 +14,28 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
+
           sudo apt install -y \
             bc \
             bison \
             build-essential \
             flex \
             curl \
+            wget \
             zip \
             unzip \
-            gcc-aarch64-linux-gnu \
-            gcc-arm-linux-gnueabi \
+            git \
+            make \
             python3 \
             ccache \
             libssl-dev \
             libc6-dev \
-            make \
-            git
-
-      - name: Setup Clang
-        run: |
-          git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
+            libelf-dev \
+            gcc-aarch64-linux-gnu \
+            gcc-arm-linux-gnueabi \
+            clang \
+            lld \
+            llvm
 
       - name: Clean Source
         run: |
@@ -44,34 +46,31 @@ jobs:
         run: |
           export ARCH=arm64
           export SUBARCH=arm64
+
           export KBUILD_BUILD_USER=github
           export KBUILD_BUILD_HOST=actions
 
+          mkdir -p out
+
           make O=out nethunter_defconfig
 
-          PATH=$PWD/clang/bin:$PATH \
-          make V=1 -j$(nproc --all) \
+          make -j$(nproc --all) \
             O=out \
             CC=clang \
-            CLANG_TRIPLE=aarch64-linux-gnu- \
+            HOSTCC=gcc \
+            HOSTCXX=g++ \
+            LLVM=1 \
+            LLVM_IAS=1 \
             CROSS_COMPILE=aarch64-linux-gnu- \
-            CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-            LD=ld.lld \
-            AR=llvm-ar \
-            NM=llvm-nm \
-            OBJCOPY=llvm-objcopy \
-            OBJDUMP=llvm-objdump \
-            STRIP=llvm-strip
-
-      - name: Check Output
-        run: |
-          ls -la out/arch/arm64/boot/
+            CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
       - name: Upload Kernel
         uses: actions/upload-artifact@v4
+
         with:
           name: ginkgoa16-kernel
+
           path: |
-            out/arch/arm64/boot/Image.gz
+            out/arch/arm64/boot/Image
             out/arch/arm64/boot/Image.gz-dtb
             out/arch/arm64/boot/dtbo.img
